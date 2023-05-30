@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Shopping Cart</div>
+                <div class="card-body">
+                    {% if cart_items %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                    <tr>
+                                        <td>{{ cart_item.product.title }}</td>
+                                        <td>{{ cart_item.quantity }}</td>
+                                        <td>${{ cart_item.product.price }}</td>
+                                        <td>
+                                            <span id="total-{{ cart_item.id }}"></span>
+                                            <script>
+                                                document.getElementById('total-{{ cart_item.id }}').textContent = '$' + ({{ cart_item.product.price }} * {{ cart_item.quantity }});
+                                            </script>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="3" class="text-right">Total:</td>
+                                    <td colspan="2">${{ cart_total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Place Order</button>
+                        </form>
+                    {% else %}
+                        <p>Your shopping cart is empty.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
