@@ -73,7 +73,7 @@ def cart_view(request):
     cart_items = CartItem.objects.filter(user=request.user)
     cart_total = 0
     for item in cart_items:
-        cart_total += item.product.price
+        cart_total += item.product.price * item.quantity
     context = {
         'cart_items': cart_items,
         'cart_total': cart_total,
