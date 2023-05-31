@@ -29,6 +29,12 @@
                                                 document.getElementById('total-{{ cart_item.id }}').textContent = '$' + ({{ cart_item.product.price }} * {{ cart_item.quantity }});
                                             </script>
                                         </td>
+                                        <td>
+                                            <form method="POST" action="{% url 'delete_cart_item' cart_item.id %}" class="d-inline">
+                                              {% csrf_token %}
+                                              <button type="submit" onclick="return confirm('Are you sure to delete?')" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 <tr>
@@ -37,9 +43,9 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <form action="{% url 'checkout' %}" method="post">
+                        <form method="POST" action="{% url 'checkout' %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Place Order</button>
+                            <button type="submit" onclick="return confirm('Are You Sure to Checkout?')" class="btn btn-primary">Place Order</button>
                         </form>
                     {% else %}
                         <p>Your shopping cart is empty.</p>
